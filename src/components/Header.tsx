@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, User, Heart, MessageCircle, Settings, LogOut, Building, Home } from 'lucide-react';
+import { User, Home, Search, Plus, LogIn, Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -14,9 +13,19 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
+const pages = [
+  { name: 'الرئيسية', path: '/', icon: <Home className="h-4 w-4 mr-1" /> },
+  { name: 'بحث', path: '/search', icon: <Search className="h-4 w-4 mr-1" /> },
+  { name: 'لوحة التحكم', path: '/dashboard', icon: <Settings className="h-4 w-4 mr-1" /> },
+  { name: 'إضافة شقة', path: '/add-apartment', icon: <Plus className="h-4 w-4 mr-1" /> },
+  { name: 'تعديل شقة', path: '/edit-apartment/1', icon: <Settings className="h-4 w-4 mr-1" /> },
+  { name: 'حسابي', path: '/profile', icon: <User className="h-4 w-4 mr-1" /> },
+  { name: 'تسجيل الدخول', path: '/login', icon: <LogIn className="h-4 w-4 mr-1" /> },
+];
+
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoggedIn] = useState(false); // This would come from auth context
+  const [isLoggedIn] = useState(false); // منطق تسجيل الدخول حسب السياق
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -26,116 +35,88 @@ const Header = () => {
     }
   };
 
-  const navigationItems = [
-    { href: '/', label: 'الرئيسية', icon: Home },
-    { href: '/search', label: 'البحث', icon: Search },
-    { href: '/contact', label: 'تواصل معنا', icon: MessageCircle },
-  ];
-
-  const userMenuItems = [
-    { href: '/profile', label: 'الملف الشخصي', icon: User },
-    { href: '/favorites', label: 'المفضلة', icon: Heart },
-    { href: '/messages', label: 'الرسائل', icon: MessageCircle },
-    { href: '/dashboard', label: 'لوحة التحكم', icon: Building },
-    { href: '/settings', label: 'الإعدادات', icon: Settings },
-  ];
-
-  const NavigationContent = () => (
-    <nav className="flex flex-col lg:flex-row gap-4 lg:gap-8">
-      {navigationItems.map((item) => (
-        <Link
-          key={item.href}
-          to={item.href}
-          className="flex items-center gap-2 text-foreground hover:text-primary transition-colors font-medium"
-        >
-          <item.icon className="h-4 w-4" />
-          {item.label}
-        </Link>
-      ))}
-    </nav>
-  );
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-            <Building className="h-5 w-5 text-primary-foreground" />
+            <Home className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="text-xl font-bold text-primary">سكن الطلاب</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-8">
-          <NavigationContent />
-        </div>
+      {/* Desktop Navigation - قائمة الصفحات في أقصى الشمال */}
+<nav className="flex items-center gap-2 ml-auto">
+  {pages
+    .filter((page) => page.name !== 'تسجيل الدخول' && page.name !== 'إنشاء حساب')
+    .map((page) => (
+      <Link
+        key={page.path}
+        to={page.path}
+        className="flex items-center px-3 py-2 rounded-md hover:bg-primary/80 transition"
+      >
+        {page.icon}
+        <span>{page.name}</span>
+      </Link>
+    ))}
+</nav>
 
-        {/* Search Bar */}
-        <div className="hidden md:flex items-center flex-1 max-w-sm mx-8">
-          <form onSubmit={handleSearch} className="relative w-full">
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="ابحث عن شقق..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pr-10 text-right"
-            />
-          </form>
-        </div>
-
-        {/* Auth Buttons / User Menu */}
-        <div className="flex items-center gap-4">
-          {!isLoggedIn ? (
-            <div className="hidden lg:flex items-center gap-2">
-              <Link to="/login">
-                <Button variant="ghost">تسجيل الدخول</Button>
+{/* User/Profile Icon & Desktop Auth */}
+<div className="flex items-center gap-4 ml-4">
+  {isLoggedIn ? (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="/placeholder.svg" />
+            <AvatarFallback>أم</AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1 text-right">
+            <p className="text-sm font-medium leading-none">أحمد محمد</p>
+            <p className="text-xs leading-none text-muted-foreground">ahmed@example.com</p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {pages
+          .filter((page) => page.name !== 'تسجيل الدخول' && page.name !== 'إنشاء حساب')
+          .map((item) => (
+            <DropdownMenuItem key={item.path} asChild>
+              <Link to={item.path} className="flex items-center gap-2 w-full">
+                {item.icon}
+                {item.name}
               </Link>
-              <Link to="/signup">
-                <Button>إنشاء حساب</Button>
-              </Link>
-            </div>
-          ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder.svg" />
-                    <AvatarFallback>أم</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1 text-right">
-                    <p className="text-sm font-medium leading-none">أحمد محمد</p>
-                    <p className="text-xs leading-none text-muted-foreground">ahmed@example.com</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {userMenuItems.map((item) => (
-                  <DropdownMenuItem key={item.href} asChild>
-                    <Link to={item.href} className="flex items-center gap-2 w-full">
-                      <item.icon className="h-4 w-4" />
-                      {item.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LogOut className="h-4 w-4 ml-2" />
-                  تسجيل الخروج
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+            </DropdownMenuItem>
+          ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <LogOut className="h-4 w-4 ml-2" />
+          تسجيل الخروج
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ) : (
+    <div className="flex items-center gap-2">
+      <Link to="/login">
+        <Button variant="ghost">تسجيل الدخول</Button>
+      </Link>
+      <Link to="/signup">
+        <Button>إنشاء حساب</Button>
+      </Link>
+    </div>
+  )}
+</div>
 
-          {/* Mobile Menu */}
+
+          {/* قائمة منسدلة للموبايل عبر أيقونة البروفايل */}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="lg:hidden">
-                <Menu className="h-5 w-5" />
+                <User className="h-6 w-6" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-80">
@@ -143,17 +124,28 @@ const Header = () => {
                 {/* Mobile Search */}
                 <form onSubmit={handleSearch} className="relative">
                   <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
+                  <input
                     type="search"
                     placeholder="ابحث عن شقق..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pr-10 text-right"
+                    className="pr-10 text-right w-full h-10 rounded-md border focus:ring-1 focus:ring-primary focus:outline-none"
                   />
                 </form>
 
                 {/* Mobile Navigation */}
-                <NavigationContent />
+                <nav className="flex flex-col">
+                  {pages.map((page) => (
+                    <Link
+                      key={page.path}
+                      to={page.path}
+                      className="flex items-center px-4 py-3 hover:bg-primary/10 transition"
+                    >
+                      {page.icon}
+                      <span>{page.name}</span>
+                    </Link>
+                  ))}
+                </nav>
 
                 {/* Mobile Auth */}
                 {!isLoggedIn ? (
@@ -169,14 +161,16 @@ const Header = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
-                    {userMenuItems.map((item) => (
-                      <Link key={item.href} to={item.href}>
-                        <Button variant="ghost" className="w-full justify-start gap-2">
-                          <item.icon className="h-4 w-4" />
-                          {item.label}
-                        </Button>
-                      </Link>
-                    ))}
+                    {pages
+                      .filter((page) => page.name !== 'تسجيل الدخول' && page.name !== 'إنشاء حساب')
+                      .map((item) => (
+                        <Link key={item.path} to={item.path}>
+                          <Button variant="ghost" className="w-full justify-start gap-2">
+                            {item.icon}
+                            {item.name}
+                          </Button>
+                        </Link>
+                      ))}
                     <Button variant="ghost" className="w-full justify-start gap-2 text-destructive">
                       <LogOut className="h-4 w-4" />
                       تسجيل الخروج
@@ -185,11 +179,8 @@ const Header = () => {
                 )}
               </div>
             </SheetContent>
-          </Sheet>
-        </div>
-      </div>
-    </header>
-  );
+     </Sheet>
+</div>
+</header>);
 };
-
 export default Header;
