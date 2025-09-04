@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Edit, Eye, Trash2, Star, MapPin, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +10,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [properties] = useState([
     {
       id: 1,
@@ -39,7 +41,7 @@ const Dashboard = () => {
       <div className="container py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">لوحة تحكم المالك</h1>
-          <Button className="gap-2">
+          <Button onClick={() => navigate('/add-apartment')} className="mb-4 gap-2">
             <Plus className="h-4 w-4" />
             إضافة شقة جديدة
           </Button>
