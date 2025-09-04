@@ -37,15 +37,16 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="flex items-center p-4 bg-white shadow overflow-hidden h-[90px]">
+      <Link to="/" className="flex items-center">
+        <img
+          src="/YallaSakn.png"
+          alt="yallaskn.png"
+          className="w-full h-[250px] object-contain "
+        />
+      </Link>
       <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-            <Home className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold text-primary">سكن الطلاب</span>
-        </Link>
+        {/* تم حذف اللوجو النصي واستبداله بالصورة */}
 
         {/* Search Bar - يظهر في الوسط في md وما فوق */}
         <div className="flex-1 flex justify-center">

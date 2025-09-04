@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Breadcrumb } from '@/components/ui/breadcrumb';
 const EditApartment = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -21,8 +22,19 @@ const EditApartment = () => {
   };
 
   return (
+    
     <>
+
     <Header/>
+      {/* Breadcrumb */}
+      <div className="container py-2">
+        <Breadcrumb items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'لوحة التحكم', href: '/dashboard' },
+          { label: 'تعديل الشقة', href: `/edit-apartment/${id}` }
+        ]} />
+      </div>
+
     <div className="container py-16">
       <Card className="max-w-xl mx-auto">
         <CardContent>

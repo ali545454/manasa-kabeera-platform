@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Eye, Trash2, Star, MapPin, Calendar } from 'lucide-react';
+import { Plus, Edit, Eye, Trash2, Star, MapPin, Calendar, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -34,6 +35,15 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+
+      {/* Breadcrumb */}
+      <div className="container py-2">
+        <Breadcrumb items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'لوحة التحكم' }
+        ]} />
+      </div>
+
       <div className="container py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">لوحة تحكم المالك</h1>

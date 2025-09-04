@@ -11,6 +11,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from '@/components/ui/pagination';
+
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [userType] = useState<'student' | 'owner'>('student'); // This would come from auth context
@@ -79,6 +89,15 @@ const Profile = () => {
       image: '/placeholder.svg'
     }
   ];
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const apartmentsPerPage = 1; // عدّل العدد حسب رغبتك
+  const totalPages = Math.ceil(favoriteApartments.length / apartmentsPerPage);
+
+  const paginatedApartments = favoriteApartments.slice(
+    (currentPage - 1) * apartmentsPerPage,
+    currentPage * apartmentsPerPage
+  );
 
   return (
     <><Header />
@@ -287,7 +306,7 @@ const Profile = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {favoriteApartments.map((apartment) => (
+                  {paginatedApartments.map((apartment) => (
                     <Card key={apartment.id} className="overflow-hidden">
                       <div className="relative">
                         <img
@@ -321,6 +340,45 @@ const Profile = () => {
                     </Card>
                   ))}
                 </div>
+                {/* Pagination */}
+                <Pagination className="mt-6">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage((prev) => Math.max(prev - 1, 1));
+                        }}
+                        disabled={currentPage === 1}
+                      />
+                    </PaginationItem>
+                    {[...Array(totalPages)].map((_, idx) => (
+                      <PaginationItem key={idx}>
+                        <PaginationLink
+                          href="#"
+                          isActive={currentPage === idx + 1}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(idx + 1);
+                          }}
+                        >
+                          {idx + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                        }}
+                        disabled={currentPage === totalPages}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </CardContent>
             </Card>
           </TabsContent>
