@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 const EditApartment = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const EditApartment = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="container py-16">
       <Card className="max-w-xl mx-auto">
         <CardContent>
@@ -63,6 +66,8 @@ const EditApartment = () => {
         تعديل
       </Button>
     </div>
+    <Footer />
+    </>
   );
 };
 

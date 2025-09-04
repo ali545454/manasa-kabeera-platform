@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +21,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-4">
@@ -149,6 +152,8 @@ const Login = () => {
         </CardContent>
       </Card>
     </div>
+    <Footer/>
+    </>
   );
 };
 

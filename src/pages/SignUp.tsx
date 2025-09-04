@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 const SignUp = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -38,6 +39,8 @@ const SignUp = () => {
   const cities = ['القاهرة', 'الجيزة', 'الإسكندرية', 'المنصورة', 'أسيوط', 'طنطا'];
 
   return (
+    <>
+    <Header />
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
       <Card className="w-full max-w-2xl shadow-xl">
         <CardHeader className="text-center space-y-4">
@@ -309,6 +312,8 @@ const SignUp = () => {
         </CardContent>
       </Card>
     </div>
+    <Footer />
+    </>
   );
 };
 

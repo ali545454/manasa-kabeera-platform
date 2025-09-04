@@ -9,7 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
+import Header from '@/components/Header';
+import Footer from '@/components/Footer'
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [userType] = useState<'student' | 'owner'>('student'); // This would come from auth context
@@ -80,6 +81,7 @@ const Profile = () => {
   ];
 
   return (
+    <><Header />
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Profile Header */}
@@ -93,7 +95,7 @@ const Profile = () => {
                   {profileData.fullName.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
-              
+
               <div className="flex-1 text-center md:text-right">
                 <div className="flex items-center justify-center md:justify-between mb-4">
                   <div>
@@ -103,7 +105,7 @@ const Profile = () => {
                       {userType === 'student' ? 'طالب' : 'صاحب سكن'}
                     </Badge>
                   </div>
-                  
+
                   <div className="hidden md:flex gap-2">
                     {!isEditing ? (
                       <Button onClick={handleEdit} className="gap-2">
@@ -146,7 +148,7 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Mobile Edit Button */}
             <div className="md:hidden mt-4 text-center">
               {!isEditing ? (
@@ -199,8 +201,7 @@ const Profile = () => {
                         value={isEditing ? tempData.fullName : profileData.fullName}
                         onChange={(e) => handleInputChange('fullName', e.target.value)}
                         className="pr-10 text-right"
-                        disabled={!isEditing}
-                      />
+                        disabled={!isEditing} />
                     </div>
                   </div>
 
@@ -213,8 +214,7 @@ const Profile = () => {
                         value={isEditing ? tempData.phone : profileData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         className="pr-10 text-right"
-                        disabled={!isEditing}
-                      />
+                        disabled={!isEditing} />
                     </div>
                   </div>
                 </div>
@@ -228,8 +228,7 @@ const Profile = () => {
                       value={isEditing ? tempData.email : profileData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       className="pr-10 text-right"
-                      disabled={!isEditing}
-                    />
+                      disabled={!isEditing} />
                   </div>
                 </div>
 
@@ -243,8 +242,7 @@ const Profile = () => {
                         value={isEditing ? tempData.city : profileData.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
                         className="pr-10 text-right"
-                        disabled={!isEditing}
-                      />
+                        disabled={!isEditing} />
                     </div>
                   </div>
 
@@ -257,8 +255,7 @@ const Profile = () => {
                         value={isEditing ? tempData.university : profileData.university}
                         onChange={(e) => handleInputChange('university', e.target.value)}
                         className="pr-10 text-right"
-                        disabled={!isEditing}
-                      />
+                        disabled={!isEditing} />
                     </div>
                   </div>
                 </div>
@@ -270,8 +267,7 @@ const Profile = () => {
                     value={isEditing ? tempData.bio : profileData.bio}
                     onChange={(e) => handleInputChange('bio', e.target.value)}
                     className="min-h-[120px] text-right resize-none"
-                    disabled={!isEditing}
-                  />
+                    disabled={!isEditing} />
                 </div>
               </CardContent>
             </Card>
@@ -297,8 +293,7 @@ const Profile = () => {
                         <img
                           src={apartment.image}
                           alt={apartment.title}
-                          className="w-full h-32 object-cover"
-                        />
+                          className="w-full h-32 object-cover" />
                         <Button
                           variant="ghost"
                           size="icon"
@@ -381,9 +376,9 @@ const Profile = () => {
                     </div>
                     <Button variant="outline">إدارة</Button>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="font-medium">الخصوصية</h3>
@@ -391,9 +386,9 @@ const Profile = () => {
                     </div>
                     <Button variant="outline">إدارة</Button>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="font-medium">تغيير كلمة المرور</h3>
@@ -401,9 +396,9 @@ const Profile = () => {
                     </div>
                     <Button variant="outline">تغيير</Button>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between items-center text-red-600">
                     <div>
                       <h3 className="font-medium">حذف الحساب</h3>
@@ -418,6 +413,8 @@ const Profile = () => {
         </Tabs>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

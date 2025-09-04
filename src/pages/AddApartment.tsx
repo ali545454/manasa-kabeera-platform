@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 const AddApartment = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -18,6 +19,8 @@ const AddApartment = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="container py-16">
       <Card className="max-w-xl mx-auto">
         <CardContent>
@@ -53,6 +56,8 @@ const AddApartment = () => {
         </CardContent>
       </Card>
     </div>
+    <Footer/>
+    </>
   );
 };
 
