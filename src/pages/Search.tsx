@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Search, Filter, MapPin, Star, Heart, Bath, Bed, Wifi, Car, Shield, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -81,6 +81,7 @@ const SearchPage = () => {
   const [bedrooms, setBedrooms] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [showVerifiedOnly, setShowVerifiedOnly] = useState(false);
+  const navigate = useNavigate();
 
   // Filter apartments based on search criteria
   useEffect(() => {
@@ -168,7 +169,7 @@ const SearchPage = () => {
             <SelectValue placeholder="اختر المنطقة" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">جميع المناطق</SelectItem>
+            <SelectItem value="all">جميع المناطق</SelectItem>
             {assuitNeighborhoods.map((neighborhood) => (
               <SelectItem key={neighborhood.id} value={neighborhood.name}>
                 {neighborhood.name}
@@ -185,7 +186,7 @@ const SearchPage = () => {
             <SelectValue placeholder="عدد الغرف" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">أي عدد</SelectItem>
+            <SelectItem value="any">أي عدد</SelectItem>
             <SelectItem value="1">غرفة واحدة</SelectItem>
             <SelectItem value="2">غرفتان</SelectItem>
             <SelectItem value="3">ثلاث غرف</SelectItem>
@@ -362,7 +363,10 @@ const SearchPage = () => {
                           شهرياً
                         </div>
                       </div>
-                      <Button size="sm">
+                      <Button
+                        size="sm"
+                        onClick={() => navigate(`/apartment/${apartment.id}`)}
+                      >
                         <Eye className="h-4 w-4 ml-1" />
                         عرض التفاصيل
                       </Button>
