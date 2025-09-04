@@ -89,7 +89,7 @@ const Home = () => {
                   onChange={(e) => setSelectedCity(e.target.value)}
                   className="w-full h-12 pr-10 pl-4 border border-input rounded-md bg-background text-right appearance-none focus:ring-2 focus:ring-primary/20"
                 >
-                  <option value="">اختر المدينة</option>
+                  <option value="all">اختر المدينة</option>
                   {cities.map(city => (
                     <option key={city} value={city}>{city}</option>
                   ))}

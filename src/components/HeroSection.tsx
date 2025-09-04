@@ -99,7 +99,7 @@ const HeroSection = () => {
                       </div>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">جميع المناطق</SelectItem>
+                      <SelectItem value="all">جميع المناطق</SelectItem>
                       {assuitNeighborhoods.map((neighborhood) => (
                         <SelectItem key={neighborhood} value={neighborhood}>
                           {neighborhood}
@@ -114,7 +114,7 @@ const HeroSection = () => {
                       <SelectValue placeholder="النطاق السعري" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">جميع الأسعار</SelectItem>
+                      <SelectItem value="all">جميع الأسعار</SelectItem>
                       <SelectItem value="0-1000">أقل من 1000 جنيه</SelectItem>
                       <SelectItem value="1000-2000">1000 - 2000 جنيه</SelectItem>
                       <SelectItem value="2000-3000">2000 - 3000 جنيه</SelectItem>
