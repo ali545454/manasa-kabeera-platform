@@ -16,7 +16,7 @@ import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
+import ApartmentBookingForm from '@/components/ApartmentBookingForm';
 // Mock apartment data
 const apartmentData = {
   id: 1,
@@ -70,6 +70,7 @@ const apartmentData = {
   minimumStay: '3 أشهر',
   deposit: 2500,
   utilities: 'متضمنة',
+  taxes: 100,
   rules: [
     'ممنوع التدخين',
     'هدوء بعد 10 مساءً',
@@ -403,7 +404,7 @@ const ApartmentDetails = () => {
           {/* Right Column - Booking Card */}
           <div className="space-y-6">
             {/* Booking Card */}
-            <Card className="sticky top-24">
+            <Card className="block top-24">
               <CardHeader>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary mb-2">
@@ -435,6 +436,7 @@ const ApartmentDetails = () => {
                 <Separator />
 
                 <div className="space-y-3">
+                  {/* استبدال زر الحجز بمكون الحجز داخل Dialog */}
                   <Dialog open={isBookingDialogOpen} onOpenChange={setIsBookingDialogOpen}>
                     <DialogTrigger asChild>
                       <Button className="w-full h-12 text-base">
@@ -446,33 +448,19 @@ const ApartmentDetails = () => {
                       <DialogHeader>
                         <DialogTitle>حجز الشقة</DialogTitle>
                       </DialogHeader>
-                      <div className="space-y-4">
-                        <p>سيتم توجيهك لصفحة الدفع لتأكيد الحجز وإيداع التأمين.</p>
-                        <div className="bg-muted/30 p-4 rounded-lg">
-                          <div className="font-medium mb-2">ملخص الحجز:</div>
-                          <div className="space-y-1 text-sm">
-                            <div className="flex justify-between">
-                              <span>الإيجار الشهري:</span>
-                              <span>{apartmentData.price.toLocaleString()} جنيه</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>التأمين:</span>
-                              <span>{apartmentData.deposit.toLocaleString()} جنيه</span>
-                            </div>
-                            <Separator className="my-2" />
-                            <div className="flex justify-between font-medium">
-                              <span>الإجمالي:</span>
-                              <span>{(apartmentData.price + apartmentData.deposit).toLocaleString()} جنيه</span>
-                            </div>
-                          </div>
-                        </div>
-                        <Button onClick={handleBooking} className="w-full">
-                          تأكيد الحجز والانتقال للدفع
-                        </Button>
-                      </div>
+                      <ApartmentBookingForm
+                        apartmentName={apartmentData.title}
+                        landlordName={apartmentData.owner.name}
+                        features={apartmentData.features.map(f => f.name)}
+                        price={apartmentData.price}
+                        deposit={apartmentData.deposit}
+                        commission={250} // مثال: يمكن حسابها ديناميكياً
+                        taxes={apartmentData.taxes || 100} // مثال: يمكن حسابها ديناميكياً
+                      />
                     </DialogContent>
                   </Dialog>
 
+                  {/* رسالة لصاحب السكن */}
                   <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
                     <DialogTrigger asChild>
                       <Button variant="outline" className="w-full h-12 text-base">
@@ -509,9 +497,6 @@ const ApartmentDetails = () => {
             {/* Owner Info */}
             <Card>
               <CardHeader>
-                <CardTitle>معلومات المالك</CardTitle>
-              </CardHeader>
-              <CardContent>
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src={apartmentData.owner.avatar} />
@@ -519,58 +504,63 @@ const ApartmentDetails = () => {
                   </Avatar>
                   <div>
                     <div className="font-medium">{apartmentData.owner.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      عضو منذ {apartmentData.owner.joinDate}
+                    <div className="space-y-3 text-sm">
+                      <div className="text-sm text-muted-foreground">
+                        عضو منذ {apartmentData.owner.joinDate}
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">التقييم:</span>
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span>{apartmentData.owner.rating}</span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">عدد العقارات:</span>
+                        <span>{apartmentData.owner.propertiesCount}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">وقت الرد:</span>
+                        <span>{apartmentData.owner.responseTime}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">عدد العقارات:</span>
-                    <span>{apartmentData.owner.propertiesCount}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">التقييم:</span>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span>{apartmentData.owner.rating}</span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">وقت الرد:</span>
-                    <span>{apartmentData.owner.responseTime}</span>
-                  </div>
-                </div>
+              </CardHeader>
+              <CardContent>
+                <Button variant="outline" className="w-full h-12 text-base">
+                  <Phone className="h-5 w-5 ml-2" />
+                  اتصل: {apartmentData.owner.phone}
+                </Button>
               </CardContent>
             </Card>
           </div>
         </div>
-
-        {/* Image Modal */}
-        <Dialog open={isImageModalOpen} onOpenChange={setIsImageModalOpen}>
-          <DialogContent className="max-w-4xl">
-            <DialogHeader>
-              <DialogTitle>صور الشقة</DialogTitle>
-            </DialogHeader>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
-              {apartmentData.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`صورة ${index + 1}`}
-                  className="w-full h-40 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
-                  onClick={() => {
-                    setCurrentImageIndex(index);
-                    setIsImageModalOpen(false);
-                  }}
-                />
-              ))}
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
-      
+
+      {/* Image Modal */}
+      <Dialog open={isImageModalOpen} onOpenChange={setIsImageModalOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>صور الشقة</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
+            {apartmentData.images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`صورة ${index + 1}`}
+                className="w-full h-40 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => {
+                  setCurrentImageIndex(index);
+                  setIsImageModalOpen(false);
+                }}
+              />
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </div>
   );

@@ -15,7 +15,7 @@ import EditApartment from "./pages/EditApartment";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-
+import HelpPage from "./pages/Help";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -38,6 +38,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
+          <Route path="/help" element={<HelpPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
